@@ -16,12 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminProductController {
 
-    private AdminProductService adminProductService;
-
-    @Autowired
-    public AdminProductController(AdminProductService adminProductService) {
-        this.adminProductService = adminProductService;
-    }
+    private final AdminProductService adminProductService;
 
     @PostMapping("/product")
     public ResponseEntity<ProductDto> addProduct(@ModelAttribute ProductDto productDto) throws IOException {

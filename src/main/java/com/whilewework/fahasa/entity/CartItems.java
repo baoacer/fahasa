@@ -1,5 +1,7 @@
 package com.whilewework.fahasa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.whilewework.fahasa.dto.CartItemsDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -31,6 +33,21 @@ public class CartItems {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
+
+    // return cartItems from cart
+    public CartItemsDto getCartDto() {
+        CartItemsDto cartItemsDto = new CartItemsDto();
+        cartItemsDto.setId(id);
+        cartItemsDto.setPrice(price);
+        cartItemsDto.setProductId(product.getId());
+        cartItemsDto.setQuantity(quantity);
+        cartItemsDto.setUserId(user.getId());
+        cartItemsDto.setProductTitle(product.getTitle());
+        cartItemsDto.setReturnedImg(product.getImages());
+
+        return cartItemsDto;
+    }
 
 }

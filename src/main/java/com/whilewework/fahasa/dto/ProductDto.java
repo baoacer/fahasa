@@ -18,7 +18,7 @@ public class ProductDto {
 
     private String coverType;
 
-    private double price;
+    private Long price;
 
     private double originalPrice;
 

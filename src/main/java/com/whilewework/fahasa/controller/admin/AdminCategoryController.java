@@ -16,12 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminCategoryController {
 
-    private CategoryService categoryService;
-
-    @Autowired
-    public AdminCategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
+    private final CategoryService categoryService;
 
     @PostMapping("/categories")
     public ResponseEntity<Category> createCategory(@RequestBody CategoryDto categoryDto) {

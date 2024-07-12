@@ -5,6 +5,7 @@ import com.whilewework.fahasa.entity.Category;
 import com.whilewework.fahasa.entity.Product;
 import com.whilewework.fahasa.repository.CategoryRepository;
 import com.whilewework.fahasa.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +15,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AdminProductServiceImpl implements AdminProductService {
 
-    private ProductRepository productRepository;
-    private CategoryRepository categoryRepository;
-
-
-    @Autowired
-    public AdminProductServiceImpl(ProductRepository productRepository,CategoryRepository categoryRepository) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-    }
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public ProductDto addProduct(ProductDto productDto) throws IOException {
