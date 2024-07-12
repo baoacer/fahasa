@@ -2,8 +2,11 @@ package com.whilewework.fahasa.services.auth;
 
 import com.whilewework.fahasa.dto.SignupRequest;
 import com.whilewework.fahasa.dto.UserDto;
+import com.whilewework.fahasa.entity.Order;
 import com.whilewework.fahasa.entity.User;
+import com.whilewework.fahasa.enums.OrderStatus;
 import com.whilewework.fahasa.enums.UserRole;
+import com.whilewework.fahasa.repository.OrderRepository;
 import com.whilewework.fahasa.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
@@ -14,13 +17,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService{
 
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private UserRepository userRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private OrderRepository orderRepository;
 
     @Autowired
-    public AuthServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AuthServiceImpl(UserRepository userRepository,
+                           BCryptPasswordEncoder bCryptPasswordEncoder,
+                           OrderRepository orderRepository) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -31,8 +38,15 @@ public class AuthServiceImpl implements AuthService{
         user.setName(signupRequest.getName());
         user.setPassword(bCryptPasswordEncoder.encode(signupRequest.getPassword()));
         user.setRole(UserRole.CUSTOMER);
-
         User createUser = userRepository.save(user);
+
+        Order order = new Order();
+        order.setAmount(0L);
+        order.setTotalAmount(0L);
+        order.setDiscount(0L);
+        order.setUser(createUser);
+        order.setOrderStatus(OrderStatus.Pending);
+        orderRepository.save(order);
 
         UserDto userDto = new UserDto();
         userDto.setId(createUser.getId());
