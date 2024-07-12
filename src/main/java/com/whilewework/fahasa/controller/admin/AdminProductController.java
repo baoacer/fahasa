@@ -31,9 +31,17 @@ public class AdminProductController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDto>> getProduct(@RequestBody ProductDto productDto) throws IOException {
+    public ResponseEntity<List<ProductDto>> getAllProduct() {
         List<ProductDto> productsDtos = adminProductService.getAllProducts();
         return ResponseEntity.ok(productsDtos);
     }
+
+    @GetMapping("/search/{name}")
+    public ResponseEntity<List<ProductDto>> getAllProductByName(@PathVariable String name) {
+        List<ProductDto> productsDtos = adminProductService.getAllProductByName(name);
+        return ResponseEntity.ok(productsDtos);
+    }
+
+
 
 }
