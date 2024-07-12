@@ -58,6 +58,7 @@ public class Product {
         productDto.setCurrency(currency);
         productDto.setByteImg(images);
         productDto.setCategoryId(category.getId());
+        productDto.setCategoryName(category.getName());
         return productDto;
     }
 }
