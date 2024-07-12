@@ -14,5 +14,5 @@ public interface AdminProductService {
 
     List<ProductDto> getAllProducts();
 
-    List<ProductDto> getAllProductByName(String name);
+    List<ProductDto> getAllProductByTitle(String title);
 }

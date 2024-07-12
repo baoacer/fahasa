@@ -54,8 +54,8 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
     @Override
-    public List<ProductDto> getAllProductByName(String name){
-        List<Product> products = productRepository.findAllByNameContaining(name);
+    public List<ProductDto> getAllProductByTitle(String title){
+        List<Product> products = productRepository.findAllByTitleContaining(title);
         return products.stream().map(Product::getDto).collect(Collectors.toList());
     }
 
