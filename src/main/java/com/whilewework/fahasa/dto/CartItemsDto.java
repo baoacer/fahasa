@@ -19,6 +19,6 @@ public class CartItemsDto {
 
     private String productTitle;
 
-    private byte[] returnedImg;
+    private String returnedImg;
 
 }

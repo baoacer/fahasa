@@ -1,7 +1,6 @@
 package com.whilewework.fahasa.dto;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class ProductDto {
@@ -26,13 +25,26 @@ public class ProductDto {
 
     private String currency;
 
-    private byte[] byteImg;
+    private String img;
 
     private Long categoryId;
 
     private String categoryName;
 
-    private MultipartFile img;
+    private String publishingYear;
 
+    private String supplier;
+
+    private String language;
+
+    private String packagingSize;
+
+    private int numberOfPages;
+
+    private String headerDescription;
+
+    private String aboutTheAuthor;
+
+    private String description;
 
 }

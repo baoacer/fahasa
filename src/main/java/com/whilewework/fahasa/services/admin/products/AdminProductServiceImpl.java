@@ -6,7 +6,6 @@ import com.whilewework.fahasa.entity.Product;
 import com.whilewework.fahasa.repository.CategoryRepository;
 import com.whilewework.fahasa.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -35,7 +34,7 @@ public class AdminProductServiceImpl implements AdminProductService {
         product.setOriginalPrice(productDto.getOriginalPrice());
         product.setDiscount(productDto.getDiscount());
         product.setCurrency(productDto.getCurrency());
-        product.setImages(productDto.getImg().getBytes()); // up image
+        product.setImages(product.getImages()); // up image
 
         Category category = categoryRepository.findById(productDto.getCategoryId()).orElseThrow();
 
