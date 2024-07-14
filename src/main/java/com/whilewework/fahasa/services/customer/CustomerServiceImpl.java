@@ -1,9 +1,8 @@
-package com.whilewework.fahasa.services.impl;
+package com.whilewework.fahasa.services.customer;
 
 import com.whilewework.fahasa.dto.ProductDto;
 import com.whilewework.fahasa.entity.Product;
 import com.whilewework.fahasa.repository.ProductRepository;
-import com.whilewework.fahasa.services.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.whilewework.fahasa.services;
+package com.whilewework.fahasa.services.admin.adminProduct;
 
 
 import com.whilewework.fahasa.dto.ProductDto;

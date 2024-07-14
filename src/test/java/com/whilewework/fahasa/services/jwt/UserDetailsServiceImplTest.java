@@ -2,7 +2,7 @@ package com.whilewework.fahasa.services.jwt;
 
 import com.whilewework.fahasa.entity.User;
 import com.whilewework.fahasa.repository.UserRepository;
-import com.whilewework.fahasa.services.impl.UserDetailsServiceImpl;
+import com.whilewework.fahasa.services.auth.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

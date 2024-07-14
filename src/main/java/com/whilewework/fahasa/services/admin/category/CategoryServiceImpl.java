@@ -1,9 +1,8 @@
-package com.whilewework.fahasa.services.impl;
+package com.whilewework.fahasa.services.admin.category;
 
 import com.whilewework.fahasa.dto.CategoryDto;
 import com.whilewework.fahasa.entity.Category;
 import com.whilewework.fahasa.repository.CategoryRepository;
-import com.whilewework.fahasa.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

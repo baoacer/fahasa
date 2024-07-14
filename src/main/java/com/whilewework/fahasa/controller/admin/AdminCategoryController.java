@@ -2,7 +2,7 @@ package com.whilewework.fahasa.controller.admin;
 
 import com.whilewework.fahasa.dto.CategoryDto;
 import com.whilewework.fahasa.entity.Category;
-import com.whilewework.fahasa.services.CategoryService;
+import com.whilewework.fahasa.services.admin.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor

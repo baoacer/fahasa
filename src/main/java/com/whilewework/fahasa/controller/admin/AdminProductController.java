@@ -1,7 +1,7 @@
 package com.whilewework.fahasa.controller.admin;
 
 import com.whilewework.fahasa.dto.ProductDto;
-import com.whilewework.fahasa.services.AdminProductService;
+import com.whilewework.fahasa.services.admin.adminProduct.AdminProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor

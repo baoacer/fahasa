@@ -1,4 +1,4 @@
-package com.whilewework.fahasa.services.impl;
+package com.whilewework.fahasa.services.auth;
 
 import com.whilewework.fahasa.entity.User;
 import com.whilewework.fahasa.repository.UserRepository;

@@ -1,6 +1,6 @@
 package com.whilewework.fahasa.filters;
 
-import com.whilewework.fahasa.services.impl.UserDetailsServiceImpl;
+import com.whilewework.fahasa.services.auth.UserDetailsServiceImpl;
 import com.whilewework.fahasa.utils.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

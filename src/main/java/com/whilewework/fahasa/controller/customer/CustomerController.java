@@ -1,13 +1,14 @@
 package com.whilewework.fahasa.controller.customer;
 
 import com.whilewework.fahasa.dto.ProductDto;
-import com.whilewework.fahasa.services.CustomerService;
+import com.whilewework.fahasa.services.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/customer")
 @RequiredArgsConstructor
