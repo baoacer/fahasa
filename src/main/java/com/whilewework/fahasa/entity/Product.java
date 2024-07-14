@@ -49,9 +49,11 @@ public class Product {
     private String headerDescription;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String aboutTheAuthor;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String images;

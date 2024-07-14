@@ -6,6 +6,9 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Entity
 @Table(name = "comment")
 @Data
@@ -16,10 +19,11 @@ public class Comment {
     private Long id;
 
     private String username;
-    private String date;
+    private LocalDateTime date;
     private int rating;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String comment;
 
     @ManyToOne

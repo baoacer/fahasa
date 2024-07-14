@@ -3,20 +3,16 @@ package com.whilewework.fahasa.services.customer.cart;
 import com.whilewework.fahasa.dto.AddProductInCartDto;
 import com.whilewework.fahasa.dto.CartItemsDto;
 import com.whilewework.fahasa.dto.OrderDto;
-import com.whilewework.fahasa.entity.CartItems;
-import com.whilewework.fahasa.entity.Order;
-import com.whilewework.fahasa.entity.Product;
-import com.whilewework.fahasa.entity.User;
+import com.whilewework.fahasa.entity.*;
 import com.whilewework.fahasa.enums.OrderStatus;
-import com.whilewework.fahasa.repository.CartItemRepository;
-import com.whilewework.fahasa.repository.OrderRepository;
-import com.whilewework.fahasa.repository.ProductRepository;
-import com.whilewework.fahasa.repository.UserRepository;
+import com.whilewework.fahasa.exceptions.ValidationException;
+import com.whilewework.fahasa.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +25,7 @@ public class CartServiceImpl implements CartService {
     private final UserRepository userRepository;
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
+    private final AdminCouponRepository couponRepository;
 
     @Override
     public ResponseEntity<?> addProductToCart(AddProductInCartDto addProductInCartDto){
@@ -95,7 +92,49 @@ public class CartServiceImpl implements CartService {
         orderDto.setDiscount(activeOrder.getDiscount());
         orderDto.setCartItems(cartItemsDtos);
 
+        if(activeOrder.getCoupon() != null){
+            orderDto.setCouponName(activeOrder.getCoupon().getName());
+        }
+
         return orderDto;
+    }
+
+    @Override
+    public OrderDto applyCoupon(Long userId, String code){
+        // Find a user's current orders that have a pending status'
+        Order activeOrder = orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.Pending);
+        if (activeOrder == null) {
+            return null;
+        }
+
+        // Find Coupon from database by code
+        Coupon coupon = couponRepository.findByCode(code).orElseThrow(() -> new ValidationException("Coupon not found"));
+
+        // Check coupon is expired
+        if(couponIsExpired(coupon)){
+            throw new ValidationException(("Coupon has expired"));
+        }
+
+        // Apply coupon to the order
+        double discountAmount =  ((coupon.getDiscount() / 100.0) * activeOrder.getTotalAmount());
+        double netAmount = activeOrder.getTotalAmount() - discountAmount;
+
+        // Update orders with discount
+        activeOrder.setDiscount((long) discountAmount);
+        activeOrder.setAmount((long) netAmount);
+        activeOrder.setCoupon(coupon);
+
+        orderRepository.save(activeOrder);
+
+        return activeOrder.getOrderDto();
+    }
+
+
+    // check coupon is expired ?
+    private boolean couponIsExpired(Coupon coupon) {
+        Date currDate = new Date();
+        Date expirationDate = coupon.getExpirationDate();
+        return expirationDate != null && currDate.after(expirationDate);
     }
 
 }
