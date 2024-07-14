@@ -1,10 +1,10 @@
-package com.whilewework.fahasa.services.customer;
+package com.whilewework.fahasa.services.impl;
 
 import com.whilewework.fahasa.dto.ProductDto;
 import com.whilewework.fahasa.entity.Product;
 import com.whilewework.fahasa.repository.ProductRepository;
+import com.whilewework.fahasa.services.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
 
     private final ProductRepository productRepository;
 

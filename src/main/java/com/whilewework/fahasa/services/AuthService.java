@@ -1,4 +1,4 @@
-package com.whilewework.fahasa.services.auth;
+package com.whilewework.fahasa.services;
 
 import com.whilewework.fahasa.dto.SignupRequest;
 import com.whilewework.fahasa.dto.UserDto;

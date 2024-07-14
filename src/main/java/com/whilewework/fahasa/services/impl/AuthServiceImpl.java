@@ -1,4 +1,4 @@
-package com.whilewework.fahasa.services.auth;
+package com.whilewework.fahasa.services.impl;
 
 import com.whilewework.fahasa.dto.SignupRequest;
 import com.whilewework.fahasa.dto.UserDto;
@@ -8,6 +8,7 @@ import com.whilewework.fahasa.enums.OrderStatus;
 import com.whilewework.fahasa.enums.UserRole;
 import com.whilewework.fahasa.repository.OrderRepository;
 import com.whilewework.fahasa.repository.UserRepository;
+import com.whilewework.fahasa.services.AuthService;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;

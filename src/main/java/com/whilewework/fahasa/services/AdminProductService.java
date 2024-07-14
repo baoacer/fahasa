@@ -1,8 +1,7 @@
-package com.whilewework.fahasa.services.admin.products;
+package com.whilewework.fahasa.services;
 
 
 import com.whilewework.fahasa.dto.ProductDto;
-import com.whilewework.fahasa.entity.Product;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.whilewework.fahasa.services.customer.cart;
+package com.whilewework.fahasa.services;
 
 import com.whilewework.fahasa.dto.AddProductInCartDto;
 import com.whilewework.fahasa.dto.OrderDto;

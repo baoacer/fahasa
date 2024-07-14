@@ -2,7 +2,7 @@ package com.whilewework.fahasa.controller.customer;
 
 import com.whilewework.fahasa.dto.AddProductInCartDto;
 import com.whilewework.fahasa.dto.OrderDto;
-import com.whilewework.fahasa.services.customer.cart.CartService;
+import com.whilewework.fahasa.services.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

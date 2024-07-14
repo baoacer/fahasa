@@ -1,6 +1,6 @@
 package com.whilewework.fahasa.filters;
 
-import com.whilewework.fahasa.services.jwt.UserDetailsServiceImpl;
+import com.whilewework.fahasa.services.impl.UserDetailsServiceImpl;
 import com.whilewework.fahasa.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

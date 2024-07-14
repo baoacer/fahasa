@@ -1,9 +1,8 @@
-package com.whilewework.fahasa.services.jwt;
+package com.whilewework.fahasa.services.impl;
 
 import com.whilewework.fahasa.entity.User;
 import com.whilewework.fahasa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

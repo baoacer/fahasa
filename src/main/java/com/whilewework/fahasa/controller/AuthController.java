@@ -5,7 +5,7 @@ import com.whilewework.fahasa.dto.SignupRequest;
 import com.whilewework.fahasa.dto.UserDto;
 import com.whilewework.fahasa.entity.User;
 import com.whilewework.fahasa.repository.UserRepository;
-import com.whilewework.fahasa.services.auth.AuthService;
+import com.whilewework.fahasa.services.AuthService;
 import com.whilewework.fahasa.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.whilewework.fahasa.services.category;
+package com.whilewework.fahasa.services;
 
 import com.whilewework.fahasa.dto.CategoryDto;
 import com.whilewework.fahasa.entity.Category;
