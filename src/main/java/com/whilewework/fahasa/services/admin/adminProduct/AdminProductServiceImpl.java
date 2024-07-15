@@ -5,6 +5,7 @@ import com.whilewework.fahasa.entity.Category;
 import com.whilewework.fahasa.entity.Product;
 import com.whilewework.fahasa.repository.CategoryRepository;
 import com.whilewework.fahasa.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,7 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
     @Override
+    @Transactional
     public Boolean deleteProductById(Long id){
         Optional<Product> optionalProduct = productRepository.findById(id);
         if(optionalProduct.isPresent()){
