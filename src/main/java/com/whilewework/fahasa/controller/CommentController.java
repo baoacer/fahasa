@@ -1,4 +1,4 @@
-package com.whilewework.fahasa.controller.admin;
+package com.whilewework.fahasa.controller;
 
 import com.whilewework.fahasa.entity.Comment;
 import com.whilewework.fahasa.services.admin.comment.CommentService;
