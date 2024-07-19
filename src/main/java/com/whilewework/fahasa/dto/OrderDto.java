@@ -1,38 +1,15 @@
 package com.whilewework.fahasa.dto;
 
-import com.whilewework.fahasa.enums.OrderStatus;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 public class OrderDto {
 
-    private Long id;
+    private String fullName;
+    private String fullAddress;
+    private String contactNumber;
+    private List<OrderProduct> orderProducts;
 
-    private String orderDescription;
-
-    private Date date;
-
-    private Long amount;
-
-    private String address;
-
-    private String payment;
-
-    private OrderStatus orderStatus;
-
-    private Long totalAmount;
-
-    private Long discount;
-
-    private UUID trackingId;
-
-    private String userName;
-
-    private List<CartItemsDto> cartItems;
-
-    private String couponName;
 }
