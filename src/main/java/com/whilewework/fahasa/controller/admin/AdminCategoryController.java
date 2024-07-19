@@ -19,13 +19,14 @@ public class AdminCategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("/categories")
-    public ResponseEntity<Category> createCategory(@RequestBody CategoryDto categoryDto) {
-        Category category = categoryService.createCategory(categoryDto);
+    public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto categoryDto) {
+        CategoryDto category = categoryService.createCategory(categoryDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
 
     @GetMapping("/categories")
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
+
 }

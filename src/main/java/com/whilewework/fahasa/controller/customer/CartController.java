@@ -1,15 +1,14 @@
 package com.whilewework.fahasa.controller.customer;
 
-import com.whilewework.fahasa.dto.AddProductInCartDto;
-import com.whilewework.fahasa.dto.OrderDto;
-import com.whilewework.fahasa.exceptions.ValidationException;
+import com.whilewework.fahasa.entity.Cart;
 import com.whilewework.fahasa.services.customer.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("*")
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/customer")
 @RequiredArgsConstructor
@@ -17,25 +16,20 @@ public class CartController {
 
     private final CartService cartService;
 
-    @PostMapping("/cart")
-    public ResponseEntity<?> addProductToCart(@RequestBody AddProductInCartDto addProductInCartDto){
-       return cartService.addProductToCart(addProductInCartDto);
+    @PostMapping("/cart/{productId}")
+    public ResponseEntity<?> addToCart(@PathVariable Long productId){
+        return cartService.addToCart(productId);
     }
 
-    @PostMapping("/cart/{userId}")
-    public ResponseEntity<?> getCartByUserId(@PathVariable Long userId){
-        OrderDto orderDto = cartService.getCartByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(orderDto);
+    @GetMapping("/cart")
+    public ResponseEntity<List<Cart>> getCartDetails(){
+        return ResponseEntity.status(HttpStatus.OK).body(cartService.getCartDetails());
     }
 
-    @PostMapping("/coupon/{userId}/{code}")
-    public ResponseEntity<?> applyCoupon(@PathVariable Long userId, @PathVariable String code){
-        try {
-            OrderDto orderDto = cartService.applyCoupon(userId, code);
-            return ResponseEntity.ok(orderDto);
-        }catch(ValidationException ex){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
+    @DeleteMapping("/cart/delete/{cartId}")
+    public ResponseEntity<?> deleteCartDetails(@PathVariable Long cartId) {
+        return cartService.deleteCartDetails(cartId);
     }
+
 
 }

@@ -1,140 +1,85 @@
 package com.whilewework.fahasa.services.customer.cart;
 
-import com.whilewework.fahasa.dto.AddProductInCartDto;
-import com.whilewework.fahasa.dto.CartItemsDto;
-import com.whilewework.fahasa.dto.OrderDto;
-import com.whilewework.fahasa.entity.*;
-import com.whilewework.fahasa.enums.OrderStatus;
-import com.whilewework.fahasa.exceptions.ValidationException;
-import com.whilewework.fahasa.repository.*;
+import com.whilewework.fahasa.entity.Cart;
+import com.whilewework.fahasa.entity.Product;
+import com.whilewework.fahasa.entity.User;
+import com.whilewework.fahasa.filters.JwtRequestFilter;
+import com.whilewework.fahasa.repository.CartRepository;
+import com.whilewework.fahasa.repository.ProductRepository;
+import com.whilewework.fahasa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
-    private final CartItemRepository cartItemRepository;
+    private final CartRepository cartRepository;
     private final ProductRepository productRepository;
-    private final AdminCouponRepository couponRepository;
+    private final UserRepository userRepository;;
 
     @Override
-    public ResponseEntity<?> addProductToCart(AddProductInCartDto addProductInCartDto){
-        // Find a user's current orders that have a pending status
-        Order activeOrder = orderRepository.findByUserIdAndOrderStatus(addProductInCartDto.getUserId(), OrderStatus.Pending);
+    public ResponseEntity<?> addToCart(Long productId){
 
-        if (activeOrder == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Active order not found");
+        // get product and user from database
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+
+        if(optionalProduct.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
         }
 
-        // Check if the product is in the cart of the current order?
-        Optional<CartItems> optionalCartItems = cartItemRepository.findByProductIdAndOrderIdAndUserId
-                (addProductInCartDto.getProductId(), activeOrder.getId(), addProductInCartDto.getUserId());
+        String username = JwtRequestFilter.CURRENT_USER;
 
-        // If the product is already in the cart, return CONFLICT status
-        if(optionalCartItems.isPresent()){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }else{
-            // If the product is not in the cart
-
-            // Find Product and User from database
-            Optional<Product> optionalProduct = productRepository.findById(addProductInCartDto.getProductId());
-            Optional<User> optionalUser = userRepository.findById(addProductInCartDto.getUserId());
-
-            // If Product and User is already, Add the product to the cart
-            if(optionalProduct.isPresent() && optionalUser.isPresent()){
-                CartItems cart = new CartItems();
-                cart.setProduct(optionalProduct.get());
-                cart.setPrice(optionalProduct.get().getPrice());
-                cart.setQuantity(1L);
-                cart.setUser(optionalUser.get());
-                cart.setOrder(activeOrder);
-
-                CartItems updatedCart =  cartItemRepository.save(cart);
-
-                // Update the order amount and total amount
-                activeOrder.setTotalAmount(activeOrder.getTotalAmount() + cart.getPrice());
-                activeOrder.setAmount(activeOrder.getAmount() + cart.getPrice());
-                activeOrder.getCartItems().add(cart);
-
-                orderRepository.save(activeOrder);
-
-                return ResponseEntity.status(HttpStatus.CREATED).body(cart);
-            }else{
-                // If Product or User is not found, return NOT_FOUND status
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Product not found");
-            }
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
+
+        // add product to cart
+        Cart cart = new Cart();
+
+        cart.setUser(optionalUser.get());
+        cart.setProduct(optionalProduct.get());
+
+        cartRepository.save(cart);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(cart);
     }
 
     @Override
-    public OrderDto getCartByUserId(Long userId) {
-        Order activeOrder = orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.Pending);
-        if (activeOrder == null) {
-            return null;
-        }
-        List<CartItemsDto> cartItemsDtos = activeOrder.getCartItems().stream().map(CartItems::getCartDto).collect(Collectors.toList());
+    public List<Cart> getCartDetails(){
+        String username = JwtRequestFilter.CURRENT_USER;
+        Optional<User> user = userRepository.findByUsername(username);
 
-        OrderDto orderDto = new OrderDto();
-        orderDto.setId(activeOrder.getId());
-        orderDto.setAmount(activeOrder.getAmount());
-        orderDto.setOrderStatus(activeOrder.getOrderStatus());
-        orderDto.setTotalAmount(activeOrder.getTotalAmount());
-        orderDto.setDiscount(activeOrder.getDiscount());
-        orderDto.setCartItems(cartItemsDtos);
-
-        if(activeOrder.getCoupon() != null){
-            orderDto.setCouponName(activeOrder.getCoupon().getName());
-        }
-
-        return orderDto;
+        return cartRepository.findByUser(user);
     }
 
     @Override
-    public OrderDto applyCoupon(Long userId, String code){
-        // Find a user's current orders that have a pending status'
-        Order activeOrder = orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.Pending);
-        if (activeOrder == null) {
-            return null;
+    public ResponseEntity<?> deleteCartDetails(Long cartId) {
+        String username = JwtRequestFilter.CURRENT_USER;
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
-        // Find Coupon from database by code
-        Coupon coupon = couponRepository.findByCode(code).orElseThrow(() -> new ValidationException("Coupon not found"));
-
-        // Check coupon is expired
-        if(couponIsExpired(coupon)){
-            throw new ValidationException(("Coupon has expired"));
+        Optional<Cart> cart = cartRepository.findById(cartId);
+        if (cart.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cart not found");
         }
 
-        // Apply coupon to the order
-        double discountAmount =  ((coupon.getDiscount() / 100.0) * activeOrder.getTotalAmount());
-        double netAmount = activeOrder.getTotalAmount() - discountAmount;
+        if (!cart.get().getUser().equals(optionalUser.get())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You do not have permission to delete this cart");
+        }
 
-        // Update orders with discount
-        activeOrder.setDiscount((long) discountAmount);
-        activeOrder.setAmount((long) netAmount);
-        activeOrder.setCoupon(coupon);
-
-        orderRepository.save(activeOrder);
-
-        return activeOrder.getOrderDto();
+        cartRepository.delete(cart.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Cart deleted successfully");
     }
 
-
-    // check coupon is expired ?
-    private boolean couponIsExpired(Coupon coupon) {
-        Date currDate = new Date();
-        Date expirationDate = coupon.getExpirationDate();
-        return expirationDate != null && currDate.after(expirationDate);
-    }
 
 }

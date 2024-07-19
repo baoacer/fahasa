@@ -1,13 +1,15 @@
 package com.whilewework.fahasa.services.customer.cart;
 
 import com.whilewework.fahasa.dto.AddProductInCartDto;
-import com.whilewework.fahasa.dto.OrderDto;
+import com.whilewework.fahasa.entity.Cart;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface CartService {
-    ResponseEntity<?> addProductToCart(AddProductInCartDto addProductInCartDto);
+    ResponseEntity<?> addToCart(Long productId);
 
-    OrderDto getCartByUserId(Long userId);
+    List<Cart> getCartDetails();
 
-    OrderDto applyCoupon(Long userId, String code);
+    ResponseEntity<?> deleteCartDetails(Long cartId);
 }
