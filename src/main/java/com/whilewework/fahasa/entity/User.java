@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "users")
 @Data
 public class User {
 
@@ -13,7 +12,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    private String username;
 
     private String password;
 
@@ -23,6 +22,6 @@ public class User {
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private byte[] img;
+    private String img;
 
 }

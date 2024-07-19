@@ -45,7 +45,7 @@ public class UserDetailsServiceImplTest {
         // Arrange
         String email = "test@example.com";
         User user = new User();
-        user.setEmail(email);
+        user.setUsername(email);
         user.setPassword("password");
 
         when(userRepository.findFirstByEmail(email)).thenReturn(Optional.of(user));

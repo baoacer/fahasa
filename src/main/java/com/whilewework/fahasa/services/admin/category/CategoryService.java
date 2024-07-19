@@ -6,7 +6,8 @@ import com.whilewework.fahasa.entity.Category;
 import java.util.List;
 
 public interface CategoryService {
-    Category createCategory(CategoryDto categoryDto);
+    CategoryDto createCategory(CategoryDto categoryDto);
 
-    List<Category> getAllCategories();
+    List<CategoryDto> getAllCategories();
+
 }

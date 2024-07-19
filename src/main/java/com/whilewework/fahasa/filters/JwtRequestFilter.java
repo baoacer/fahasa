@@ -20,6 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+    public static String CURRENT_USER = "";
     private final UserDetailsServiceImpl userDetailsService;
 
     private final JwtUtil jwtUtil;
@@ -35,6 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             try {
                 username = jwtUtil.extractUsername(token);
+                CURRENT_USER = username;
             } catch (Exception e) {
                 System.err.println("JWT decoding error: " + e.getMessage());
             }

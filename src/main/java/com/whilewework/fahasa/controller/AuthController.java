@@ -40,6 +40,7 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final AuthService authService;
 
+
     @PostMapping("/authentication")
     public void createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest,
                                           HttpServletResponse response) throws IOException, JSONException {
@@ -54,7 +55,7 @@ public class AuthController {
 
         // Load user details
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        Optional<User> optionalUser = userRepository.findFirstByEmail(userDetails.getUsername());
+        Optional<User> optionalUser = userRepository.findFirstByUsername(userDetails.getUsername());
 
         // Generate JWT
         final String jwt = jwtUtil.generateToken(userDetails.getUsername());
@@ -63,6 +64,7 @@ public class AuthController {
             response.getWriter().write(new JSONObject()
                     .put("userId", optionalUser.get().getId())
                     .put("role", optionalUser.get().getRole())
+                    .put("token", jwt)
                     .toString()
             );
 
@@ -71,13 +73,12 @@ public class AuthController {
                     "X-Requested-With, Content-Type, Accept, X-Custom-Headers");
             response.addHeader(HEADER_STRING, TOKEN_PREFIX + jwt);
         }
-        System.out.println(jwt);
-
     }
+
 
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUpUser(@RequestBody SignupRequest signupRequest){
-        if(authService.hasUserWithEmail(signupRequest.getEmail())){
+        if(authService.hasUserWithUsername(signupRequest.getUsername())){
             return new ResponseEntity<>("User already exists!", HttpStatus.NOT_ACCEPTABLE);
         }
 

@@ -7,5 +7,5 @@ public interface AuthService {
 
     UserDto createUser(SignupRequest signupRequest);
 
-    boolean hasUserWithEmail(String email);
+    boolean hasUserWithUsername(String email);
 }

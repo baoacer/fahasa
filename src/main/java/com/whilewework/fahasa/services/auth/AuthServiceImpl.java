@@ -26,23 +26,23 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public UserDto createUser(SignupRequest signupRequest){
         User user = new User();
-        user.setEmail(signupRequest.getEmail());
+        user.setUsername(signupRequest.getUsername());
         user.setName(signupRequest.getName());
         user.setPassword(bCryptPasswordEncoder.encode(signupRequest.getPassword()));
         user.setRole(UserRole.CUSTOMER);
         User createUser = userRepository.save(user);
 
-        Order order = new Order();
-        order.setAmount(0L);
-        order.setTotalAmount(0L);
-        order.setDiscount(0L);
-        order.setUser(createUser);
-        order.setOrderStatus(OrderStatus.Pending);
-        orderRepository.save(order);
+//        Order order = new Order();
+//        order.setAmount(0L);
+//        order.setTotalAmount(0L);
+//        order.setDiscount(0L);
+//        order.setUser(createUser);
+//        order.setOrderStatus(OrderStatus.Pending);
+//        orderRepository.save(order);
 
         UserDto userDto = new UserDto();
         userDto.setId(createUser.getId());
-        userDto.setEmail(createUser.getEmail());
+        userDto.setUsername(createUser.getUsername());
         userDto.setName(createUser.getName());
         userDto.setUserRole(createUser.getRole());
 
@@ -50,8 +50,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean hasUserWithEmail(String email) {
-        return userRepository.findFirstByEmail(email).isPresent();
+    public boolean hasUserWithUsername(String username) {
+        return userRepository.findFirstByUsername(username).isPresent();
     }
 
     @PostConstruct
@@ -59,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
         User adminAccount = userRepository.findByRole(UserRole.ADMIN);
         if (adminAccount == null){
             User user = new User();
-            user.setEmail("admin@test.com");
+            user.setUsername("admin@gmail.com");
             user.setName("admin");
             user.setRole(UserRole.ADMIN);
             user.setPassword(bCryptPasswordEncoder.encode("admin"));
