@@ -55,6 +55,7 @@ public class Product {
     private Set<Comment> comments;
 
     @ManyToMany(mappedBy = "products")
+    @JsonIgnore
     private List<Order> orders;
 
 }
